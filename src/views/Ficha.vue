@@ -76,7 +76,7 @@ export default {
       this.classes = data.classes;
       this.racas = data.racas;
       this.niveis = data.niveis;
-    },
+    }, 
     async createficha(e){
       e.preventDefault();
       const forca = this.classe.Força + this.raca.Força

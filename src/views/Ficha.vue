@@ -40,7 +40,13 @@
           <input type="submit" class="submit-btn" value="Criar minha Ficha">
         </div>
       </form>
-
+      <v-list>
+      <v-list-item-group>
+      <v-list-item v-for="ficha of fichas" :key="ficha.id">
+        {{ficha.nome}}
+      </v-list-item>
+      </v-list-item-group>
+    </v-list>
     </div>
   </div>
 </template>
@@ -63,9 +69,29 @@ export default {
       nivel:  null,
       msg: null,
       uid: '',
+      fichas: [],
     }
   },
   methods: {
+    async buscarFichasDoServidor() {
+      this.fichas = [];
+      const logFichas = await fb.fichaCollection.where("owner", "==", this.uid).get();
+      for (const doc of logFichas.docs){
+        this.Fichas.push({
+          id: doc.id,
+         nome: doc.data().nome
+        });
+      }
+    },
+    async adicionar() {
+      await fb.fichaCollection.add({
+        nome: this.nome,
+        dataGravacao: new Date().toISOString().slice(0, 10),
+        owner: this.uid,
+      });
+      this.nome = "";
+      this.buscarFichasDoServidor();
+    },
     gerar_nome(){
       this.nome = gerar()
     },
@@ -136,6 +162,7 @@ export default {
   mounted(){
     this.getFichas(),
     this.uid = fb.auth.currentUser.uid;
+    this.buscarFichasDoServidor();
   },
   components: {
     Message

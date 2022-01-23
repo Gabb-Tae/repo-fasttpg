@@ -1,56 +1,135 @@
 <template>
-  <div class="row">
-    <div class="container">
-        <h1>Dados online</h1>
-                <div class="row">
-            <div class="col-md-2">
-                <div class="jumbotron m-0" id="jd20">
-                    <div class="text-center">
-                        <v-btn color=#8b0292 class="white--text" @click="rodar_d20()">Rolar</v-btn>
-                    </div>
-                    <div class="text-center">
-                            <img src="../assets/dices/d20-icon.png" width="100" 
-                            style="cursor: pointer;" id="id20" data-type="20" 
-                            @click="rodar_d20()">
-                    </div>
-                    <div style="text-align: center; font-size: 18px; font-style: italic;" id="result"><h3>Resultado {{d20}}</h3></div>
-                </div>
-                <div class="card">
-                <h1>D20</h1>
-                <div class="caixa-resultado" id="box-res-20"></div>
-                <button onclick="girarDadoD20()">Rolar!</button>
-            </div>
-            </div>
 
-            <div class="col-md-2">
-                <div class="jumbotron m-0" id="jd12">
-                    <div class="text-center">
-                        <v-btn color=#8b0292 class="white--text" @click="rodar_d12">Rolar</v-btn>
-                    </div>
-                    <div class="text-center">
-                            <img src="../assets/dices/d12-icon.png" width="100" style="cursor: pointer;" id="id12" data-type="12" @click="rodar_d12">
-                    </div>
-                    <div style="text-align: center; font-size: 18px; font-style: italic;"><h3>{{d12}}</h3></div>
-                    <input id="d20" type="button" value="D20" onclick="clicar12()">
-                </div>
-            </div>
+  <div class="container">
+    
+    <h2 id="titulo">{{titulo}}</h2>
+    <br>
+    <div class="grid-container">
 
-        </div>
-        <br>
-    </div>
-</div>
+    <div class="grid-child">
+      
+      <span class="input-group-btn">
+      <v-btn color=#8b0292 @keyup.enter="D4" @click="D4" id="dado" class="white--text">Rolar D4</v-btn>
+      <br> <br>
+      <v-img src="../assets/dices/d4-icon.png" width="100"
+      style="cursor: pointer;" data-type="20"
+      @click="D4"></v-img>
+      <br>
+      <p style="font-size: 18px; font-style: italic;">Resultado: {{ quatro }}</p> 
+      </span>
+  </div>
+  <div class="grid-child">
+       
+      <span class="input-group-btn">
+      <v-btn color=#8b0292 @keyup.enter="D6" @click="D6" id="dado" class="white--text">Rolar D6</v-btn>
+      <br> <br>
+      <v-img src="../assets/dices/d6-icon.png" width="100"
+      style="cursor: pointer;" data-type="20"
+      @click="D6"></v-img>
+      <br>
+      <p style="font-size: 18px; font-style: italic;">Resultado: {{ seis }}</p> 
+      </span>
+  </div>
+  <div class="grid-child">
+      <span class="input-group-btn">
+      <v-btn color=#8b0292 @keyup.enter="D8" @click="D8" id="dado" class="white--text">Rolar D8</v-btn>
+      <br> <br>
+      <v-img src="../assets/dices/d8-icon.png" width="100"
+      style="cursor: pointer;" data-type="20"
+      @click="D8"></v-img>
+      <br>
+      <p style="font-size: 18px; font-style: italic;">Resultado: {{ oito }}</p> 
+      </span>
+  </div>
+  <div class="grid-child">
+      <span class="input-group-btn">
+      <v-btn color=#8b0292 @keyup.enter="D10" @click="D10" id="dado" class="white--text">Rolar D10</v-btn>
+      <br><br>
+      <v-img src="../assets/dices/d10-icon.png" width="100"
+      style="cursor: pointer;" data-type="10"
+      @click="D10"></v-img>
+      <br>
+      <p style="font-size: 18px; font-style: italic;">Resultado: {{ dez }}</p> 
+      </span>
+  </div>
+  <div class="grid-child">
+      <span class="input-group-btn">
+      <v-btn color=#8b0292 @keyup.enter="D12" @click="D12" id="dado" class="white--text">Rolar D12</v-btn>
+      <br> <br>
+      <v-img src="../assets/dices/d12-icon.png" width="100"
+      style="cursor: pointer;" data-type="12"
+      @click="D12"></v-img>
+      <br>
+      <p style="font-size: 18px; font-style: italic;">Resultado: {{ doze }}</p> 
+      </span>
+  </div>
+  <div class="grid-child" >
+      <span class="input-group-btn">
+      <v-btn color=#8b0292 @keyup.enter="D20" @click="D20" id="dado" class="white--text">Rolar D20</v-btn>
+      <br><br>
+      <v-img id="d20" src="../assets/dices/d20-icon.png" 
+      width="100"
+      style="cursor: pointer;" data-type="20"
+      @click="D20"></v-img>
+      <br>
+      <p style="font-size: 18px; font-style: italic;">Resultado: {{ vinte }}</p> 
+      </span>
+  </div>
+  </div>
+  </div>
 </template>
 
 <script>
 export default {
-  async rodar_d20(){
-  var d20 = (Math.floor(Math.random() *20)+1)
-  return d20
-}
-
-  }
+  name: 'dados',
+  data() {
+    return {
+      titulo: "Rolar de Dados Online",
+      quatro: '',
+      seis: '',
+      oito:'',
+      dez:'',
+      doze:'',
+      vinte:'',
+      
+    };
+  },
+  methods: {
+    D4() {
+      this.quatro = Math.floor(Math.random()*4+1);
+    },
+    D6() {
+      this.seis = Math.floor(Math.random()*6+1);
+    },
+    D8() {
+      this.oito = Math.floor(Math.random()*8+1);
+    },
+    D10() {
+      this.dez = Math.floor(Math.random()*10+1);
+    },
+    D12() {
+      this.doze = Math.floor(Math.random()*12+1);
+    },
+    D20() {
+      this.vinte = Math.floor(Math.random()*20+1);
+    },
+  },
+};
 </script>
 
 <style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 20px;
+}
+#dado{
+    margin: 0 auto;
+}
+ #titulo {
+   color:#222;
+   padding: 5px 10px;
+   border-left: 4px solid #8b0292;
+ }
 
 </style>

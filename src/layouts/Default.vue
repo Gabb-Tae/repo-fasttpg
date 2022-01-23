@@ -22,7 +22,7 @@
         <v-list-item-avatar>
           <v-icon>mdi-account</v-icon>
         </v-list-item-avatar>
-        <v-list-item-content>Seu Perfil</v-list-item-content>
+        <v-list-item-content>{{this.nome + this.sobrenome}}</v-list-item-content>
         <v-btn icon small><v-icon>mdi-chevron-left</v-icon></v-btn>
       </v-list-item>
       <v-divider></v-divider>
@@ -55,13 +55,18 @@ Lucas Danilo Born.</span></v-footer>
 </template>
 
 <script>
+import * as fb from '@/plugins/firebase'
 export default {
   data() {
     return {
+      nome: '',
+      sobrenome: '',
+      uid: '',
+      temPerfil: false,
       sidebar: true,
       mini: false,
       items: [
-        { title: "Home", icon:"mdi-account", to:"/"},
+        { title: "Home", icon:"mdi-script-text", to:"/"},
         { title:"Ficha", icon:"mdi-dice-d20",to:"/ficha"},
         { title:"Arquivo de Fichas", icon:"mdi-bookshelf",to:"/lista"},
         { title: "Classes", icon:"mdi-anvil",to:"/classes"},
@@ -72,6 +77,18 @@ export default {
         { title: "Sair", icon:"mdi-exit-to-app", to:"/login"},
       
       ],
+  async mounted(){
+    this.uid = fb.auth.currentUser.uid;
+    const userProfile = await fb.profileCollection.where("uid", "==", this.uid).get();
+  if (userProfile.docs.length > 0) {
+    this.temPerfil = true;
+    const perfil = userProfile.docs[0];
+    this.profileId = perfil.id;
+    this.nome = perfil.data().nome;
+    this.sobrenome = perfil.data().sobrenome;
+  }
+  },
+
     };
   }
 }

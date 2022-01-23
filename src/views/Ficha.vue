@@ -6,7 +6,7 @@
         <h3>Criação Rápida de Ficha</h3>
         <div class="input-container-nome" id="gerador_nomes">
         <input type="text" id="nome" name="nome" v-model="nome" placeholder="Nome do Personagem">
-        <v-icon class="btn" slot="append" @click="gerar_nome()">mdi-dice-multiple</v-icon>
+        <v-icon class="btn" slot="append" @click="gerar()">mdi-dice-multiple</v-icon>
         <v-icon slot="append" @click="adicionar">mdi-send</v-icon>
         </div>
         <div class="input-container">
@@ -53,7 +53,8 @@
 
 <script>
 import Message from './Message.vue';
-import gerar from '@/utils/gerarnome.js'
+import gerarnome from '@/utils/gerarnome.js'
+import gerarsobrenome from '@/utils/gerarsobrenome.js'
 import * as fb from "@/plugins/firebase"
 export default {
   name: "fichaform",
@@ -92,8 +93,8 @@ export default {
       this.nome = "";
       this.buscarFichasDoServidor();
     },
-    gerar_nome(){
-      this.nome = gerar()
+    gerar(){
+      this.nome = gerarnome()+gerarsobrenome()
     },
     async getFichas(){
       const req = await fetch("http://localhost:3000/Fichas");

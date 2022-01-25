@@ -1,9 +1,12 @@
 <template>
   <v-app>
-    <v-app-bar app color=#8b0292 dark elevation="1" >
+    <v-app-bar app color="#8b0292" dark elevation="1">
       <v-app-bar-nav-icon @click.stop="sidebar = !sidebar"></v-app-bar-nav-icon>
-      <v-img max-height="120" max-width="120" 
-        src="../assets/images/logo-rpg.png"></v-img>
+      <v-img
+        max-height="120"
+        max-width="120"
+        src="../assets/images/logo-rpg.png"
+      ></v-img>
       <v-spacer></v-spacer>
       <v-icon> mdi-account</v-icon>
     </v-app-bar>
@@ -11,46 +14,46 @@
       <v-list dense color="#8b0292" dark>
         <v-list-item>
           <v-list-item-action>
-            <v-icon class="px=2" @click.stop="sidebar = !sidebar">mdi-chevron-left</v-icon>
+            <v-icon class="px=2" @click.stop="sidebar = !sidebar"
+              >mdi-chevron-left</v-icon
+            >
           </v-list-item-action>
           <v-list-item-title>
-          <h3>FastRPG</h3>
-        </v-list-item-title>
+            <h3>FastRPG</h3>
+          </v-list-item-title>
         </v-list-item>
       </v-list>
       <v-list-item @click="mini = !mini">
         <v-list-item-avatar>
           <v-icon>mdi-account</v-icon>
         </v-list-item-avatar>
-        <v-list-item-content>{{this.nome + this.sobrenome}}</v-list-item-content>
+        <v-list-item-content>{{nome + " " + sobrenome}}</v-list-item-content>
         <v-btn icon small><v-icon>mdi-chevron-left</v-icon></v-btn>
       </v-list-item>
       <v-divider></v-divider>
-        <v-list>
-          <v-list-item v-for="item of items" v-bind:key="item.title" link :to="item.to">
-            <v-list-icon>
-              <v-icon>{{item.icon}}</v-icon>
-            </v-list-icon> 
-            <v-list-item-content>{{item.title}}</v-list-item-content>
-          </v-list-item>
-        </v-list>
+      <v-list>
+        <v-list-item
+          v-for="item of items"
+          v-bind:key="item.title"
+          link
+          :to="item.to"
+        >
+          <v-list>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list>
+          <v-list-item-content>{{ item.title }}</v-list-item-content>
+        </v-list-item>
+      </v-list>
     </v-navigation-drawer>
-    <v-main><router-view>
-      </router-view></v-main>
+    <v-main><router-view> </router-view></v-main>
     <v-footer app class="py-3">
-      <span class="caption">FastRPG &copy;2021 <br>
-      Equipe : Gabriel da Maia Leandro,
-
-Gabrieli Traudete Ardini,
-
-Beatriz Cristina de Arruda,
-
-Maria Eduarda Nichelle Ferreira,
-
-Guinnever Correa,
-
-Lucas Danilo Born.</span></v-footer>
-
+      <span class="caption"
+        >FastRPG &copy;2021 <br />
+        Equipe : Gabriel da Maia Leandro, Gabrieli Traudete Ardini, Beatriz
+        Cristina de Arruda, Maria Eduarda Nichelle Ferreira, Guinnever Correa,
+        Lucas Danilo Born.</span
+      ></v-footer
+    >
   </v-app>
 </template>
 
@@ -62,7 +65,6 @@ export default {
       nome: '',
       sobrenome: '',
       uid: '',
-      temPerfil: false,
       sidebar: true,
       mini: false,
       items: [
@@ -74,26 +76,29 @@ export default {
         { title: "Dados", icon:"mdi-dice-multiple",to:"/dados"},
         { title: "Conversor", icon:"mdi-bitcoin",to:"/Conversor"},
         { title: "Perfil", icon:"mdi-account-cog", to:"/perfil"},
-        { title: "Sair", icon:"mdi-exit-to-app", to:"/login"},
+        { title: "Sair", icon:"mdi-exit-to-app", to:"/login"}
       
-      ],
-  async mounted(){
-    this.uid = fb.auth.currentUser.uid;
-    const userProfile = await fb.profileCollection.where("uid", "==", this.uid).get();
-  if (userProfile.docs.length > 0) {
-    this.temPerfil = true;
-    const perfil = userProfile.docs[0];
-    this.profileId = perfil.id;
-    this.nome = perfil.data().nome;
-    this.sobrenome = perfil.data().sobrenome;
-  }
+      ]
+    }
   },
-
-    };
+  methods: {
+    async buscarPerfilDoServidor() {
+      this.uid = fb.auth.currentUser.uid;
+      const lognome = await fb.profileCollection.where("uid", "==", this.uid).get();
+      this.nome = "";
+      this.sobrenome = "";
+      for (const doc of lognome.docs){
+        this.nome = doc.data().nome
+        this.sobrenome = doc.data().sobrenome
+      }
+    },   
+  }, 
+  mounted() {
+    this.uid = fb.auth.currentUser.uid;
+    this.buscarPerfilDoServidor();
   }
 }
 </script>
 
 <style>
-
 </style>

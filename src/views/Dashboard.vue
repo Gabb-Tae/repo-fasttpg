@@ -1,32 +1,29 @@
 <template>
   <div id="ficha-arquivo-rows">
-      <div class="ficha-arquivo-row" v-for="item in arquivos" :key="item.id">
+      <div class="ficha-arquivo-row" v-for="itens in fichas" :key="itens.id">
         <div id="ficha-title">
-          Ficha de {{ item.nome }} 
+          Ficha de {{ itens.nome }} 
         </div>
-        <div class="order-number">
-            #ID: {{ item.id }}
-        </div>
-              <div id="text">Nome: {{ item.nome }}</div>
-              <div>Raça: {{ item.raca }}</div>
-              <div>Classe: {{ item.classe }}</div>
-              <div>Nível: {{ item.nivel }}</div>
-              <div>Vida Máxima: {{item.vidamax}}</div>
-              <div>Habilidade Principal: {{item.habilidade}}</div>
-              <div>Força: {{ item.forca }}</div>
-              <div>Destreza: {{ item.destreza }}</div>
-              <div>Constituição: {{ item.constituicao }}</div>
-              <div>Inteligencia: {{ item.inteligencia }}</div>
-              <div>Sabedoria: {{ item.sabedoria }}</div>
-              <div>Carisma: {{ item.carisma }}</div>
-              <div>Tamanho: {{item.tamanho}}</div>
-              <div>Velocidade: {{item.deslocamento}}</div>
-              <div>Idioma: <p> {{item.idioma}} </p></div>
-              <div>Caracteristicas: <p> {{item.caracteristicas}} </p></div>
-              <div>Descrição: <p> {{item.descricao}} </p> </div>
+              <div id="text">Nome: {{ itens.nome }}</div>
+              <div>Raça: {{ itens.raca }}</div>
+              <div>Classe: {{ itens.classe }}</div>
+              <div>Nível: {{ itens.nivel }}</div>
+              <div>Vida Máxima: {{itens.vidamax}}</div>
+              <div>Habilidade Principal: {{itens.habilidade}}</div>
+              <div>Força: {{ itens.forca }}</div>
+              <div>Destreza: {{ itens.destreza }}</div>
+              <div>Constituição: {{ itens.constituicao }}</div>
+              <div>Inteligencia: {{ itens.inteligencia }}</div>
+              <div>Sabedoria: {{ itens.sabedoria }}</div>
+              <div>Carisma: {{ itens.carisma }}</div>
+              <div>Tamanho: {{itens.tamanho}}</div>
+              <div>Velocidade: {{itens.deslocamento}}</div>
+              <div>Idioma: <p> {{itens.idioma}} </p></div>
+              <div>Caracteristicas: <p> {{itens.caracteristicas}} </p></div>
+              <div>Descrição: <p> {{itens.descricao}} </p> </div>
               <div>
-                <button><v-icon class="like-btn" @click="like">mdi-thumb-up-outline</v-icon></button><br> <br>
-                <button v-if="item.uid === uid" class="delete-btn" @click="deleteitem(item.id)"><v-icon>mdi-delete</v-icon></button>
+                <button><v-icon class="like-btn">mdi-thumb-up-outline</v-icon></button><br> <br>
+                <button v-if="uid === itens.owner" class="delete-btn" ><v-icon>mdi-delete</v-icon></button>
               </div>
               
       </div>
@@ -39,24 +36,43 @@ export default {
   name: "Dashboard",
     data() {
       return {
-        arquivos: null,
-        arquivo_id: null,
         uid: '',
+        fichas: [],
       }
     },
-    methods: {
-      async getcriacao() {
-        const req = await fetch("http://localhost:3000/arquivos");
+  methods: {
+    async buscarFichasDoServidor() {
+      this.ficha = [];
+      const logficha = await fb.fichaCollection.get();
+      for (const doc of logficha.docs){
+        this.fichas.push({
+          owner: doc.data().owner,
+          nome: doc.data().nome,
+          classe: doc.data().classe,
+          raca: doc.data().raca,
+          nivel: doc.data().nivel,
+          vidamax: doc.data().vidamax,
+          habilidade: doc.data().habilidade,
+          forca: doc.data().forca,
+          destreza: doc.data().destreza,
+          constituicao: doc.data().constituicao,
+          inteligencia: doc.data().inteligencia,
+          sabedoria: doc.data().sabedoria,
+          carisma: doc.data().carisma,
+          tamanho: doc.data().tamanho,
+          deslocamento: doc.data().deslocamento,
+          idioma: doc.data().idioma,
+          caracteristicas: doc.data().caracteristicas,
+          descricao: doc.data().descricao,
 
-        const data = await req.json();
-
-        this.arquivos = data;
-      },
+        });
+      }
+    },
 
 },
     mounted() {
       this.uid = fb.auth.currentUser.uid;
-      this.getcriacao();
+      this.buscarFichasDoServidor();
     }
 
 }
@@ -82,7 +98,7 @@ export default {
 
 .ficha-arquivo-row{
   width: 100%;
-  padding: 15px;
+  padding:5px 15px;
   border-bottom: 1px solid #CCC;
 }
 

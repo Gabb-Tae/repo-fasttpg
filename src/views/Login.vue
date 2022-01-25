@@ -33,7 +33,7 @@
     <v-snackbar 
     color="orange" 
     v-model="errorLogin" 
-    danger multiline
+    
     timeout="2000"> Usuário ou senha inválidos
     </v-snackbar>
     <v-dialog v-model="novaConta" persistent max-width="300">

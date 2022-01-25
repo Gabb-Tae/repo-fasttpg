@@ -27,18 +27,25 @@
 
 <script>
 export default {
-  
-  methods:{
-    async gerar_po_pc() {
-    this.po_pc_resultado = ""
+  data (){
+    return{
+      po_pc_resultado: {},
+      po_pp_resultado: {},
+      po_platina_resultado: {},
+          }
+  },
+     methods:{
+    gerar_po_pc() {
+      this.po_pc_resultado = {}
     },
-    async gerar_po_pp() {
-      this.po_pp_resultado = ""
+    gerar_po_pp() {
+      this.po_pp_resultado = {}
     },
-    async gerar_po_platina() {
-      this.po_platina_resultado = ""
+    gerar_po_platina() {
+      this.po_platina_resultado = {}
     },
   }
+
 }
 </script>
 
